@@ -1,2 +1,2 @@
-# myqsl
+# mysql
 Custom MySQL deployment
