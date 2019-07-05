@@ -1,5 +1,5 @@
 FROM mysql:8.0.16
-COPY config/my.cnf /etc/mysql/my.cnf
+COPY config/my.cnf /etc/mysql/my.cnf.tmp
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["docker-entrypoint.sh"]
 
