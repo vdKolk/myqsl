@@ -1,4 +1,9 @@
 #!/bin/bash
+echo "*** Persistant Path ***"
+echo $mysqlPersistantDB
+envsubst '${mysqlPersistantDB}' < /etc/mysql/my.cnf.tmp > /etc/mysql/my.cnf
+echo "*** Persistant Path ***"
+
 set -eo pipefail
 shopt -s nullglob
 
