@@ -3,7 +3,7 @@ echo "*** Persistent Path ***"
 oldPath="/var/lib/mysql"
 echo $oldPath
 
-newPath=$MYSQL_PERSISTENT_PATH
+newPath=$MYSQL_PERSISTENT_DB
 echo $newPath
 
 sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
