@@ -1,7 +1,14 @@
 #!/bin/bash
 echo "*** Persistent Path ***"
-echo $MYSQL_PERSISTENT_PATH
-envsubst '${MYSQL_PERSISTENT_PATH}' < /etc/mysql/my.cnf.tmp > /etc/mysql/my.cnf
+oldPath="/var/lib/mysql"
+echo $oldPath
+
+newPath=$MYSQL_PERSISTENT_PATH
+echo $newPath
+
+sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
+
+#envsubst '${MYSQL_PERSISTENT_PATH}' < /etc/mysql/my.cnf.tmp > /etc/mysql/my.cnf
 echo "*** Persistent Path ***"
 
 set -eo pipefail
