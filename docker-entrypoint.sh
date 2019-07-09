@@ -205,14 +205,14 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		echo
 		# Changes if using persistent data
 		if [ ! -f "${MYSQL_PERSISTENT_DB}/ik-ben-klaar" ]; then
-		   echo "*** Start of SQL import"
+		   echo "*** Start of SQL import ***"
 		   ls /docker-entrypoint-initdb.d/ > /dev/null
 		   for f in /docker-entrypoint-initdb.d/*; do
 			process_init_file "$f" "${mysql[@]}"
 		   done
 		   touch $MYSQL_PERSISTENT_DB/ik-ben-klaar
 		else
-		   echo "${MYSQL_PERSISTENT_DB} has a previous deployment"
+		   echo "*** ${MYSQL_PERSISTENT_DB} has a previous deployment ***"
 		fi
 
 		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
