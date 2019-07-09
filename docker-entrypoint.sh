@@ -8,7 +8,6 @@ echo $newPath
 echo "*** Changes to my.cnf ***"
 sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
 echo "*** Finish Persistent Path ***"
-touch $MYSQL_PERSISTENT_DB/ik-ben-klaar
 
 set -eo pipefail
 shopt -s nullglob
@@ -211,6 +210,7 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		   for f in /docker-entrypoint-initdb.d/*; do
 			process_init_file "$f" "${mysql[@]}"
 		   done
+		   touch $MYSQL_PERSISTENT_DB/ik-ben-klaar
 		else
 		   echo "${MYSQL_PERSISTENT_DB} has a previous deployment"
 		fi
