@@ -1,15 +1,14 @@
 #!/bin/bash
-echo "*** Persistent Path ***"
+echo "*** Persistent Old Path ***"
 oldPath="/var/lib/mysql"
 echo $oldPath
-
+echo "*** Persistent New Path ***"
 newPath=$MYSQL_PERSISTENT_DB
 echo $newPath
-
+echo "*** Changes to my.cnf ***"
 sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
-
-#envsubst '${MYSQL_PERSISTENT_PATH}' < /etc/mysql/my.cnf.tmp > /etc/mysql/my.cnf
-echo "*** Persistent Path ***"
+echo "*** Finish Persistent Path ***"
+touch $MYSQL_PERSISTENT_DB/ik-ben-klaar
 
 set -eo pipefail
 shopt -s nullglob
@@ -205,10 +204,16 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		fi
 
 		echo
-		ls /docker-entrypoint-initdb.d/ > /dev/null
-		for f in /docker-entrypoint-initdb.d/*; do
+		# Changes if using persistent data
+		if [ ! -f "${MYSQL_PERSISTENT_DB}/ik-ben-klaar" ]; then
+		   echo "*** Start of SQL import"
+		   ls /docker-entrypoint-initdb.d/ > /dev/null
+		   for f in /docker-entrypoint-initdb.d/*; do
 			process_init_file "$f" "${mysql[@]}"
-		done
+		   done
+		else
+		   echo "${MYSQL_PERSISTENT_DB} has a previous deployment"
+		f1
 
 		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
 			"${mysql[@]}" <<-EOSQL
