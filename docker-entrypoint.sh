@@ -213,7 +213,7 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		   done
 		else
 		   echo "${MYSQL_PERSISTENT_DB} has a previous deployment"
-		f1
+		fi
 
 		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
 			"${mysql[@]}" <<-EOSQL
