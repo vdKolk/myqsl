@@ -1,14 +1,12 @@
 #!/bin/bash
 # if persistent is true use local data, else store mysql remote
-echo "*** Persistent = " $MYSQL_LOCAL_PATH " ***"
-if [ "$MYSQL_LOCAL_PATH" = "true" ]; then
+echo "*** Persistent = " $MYSQL_PERSISTENT " ***"
+if [ "$MYSQL_PERSISTENT" = "true" ]; then
   echo "Adjusting deployment for persistent storage"
-  echo "*** Persistent Old Path ***"
+  echo "*** Persistent change ***"
   oldPath="/var/lib/mysql"
-  echo $oldPath
-  echo "*** Persistent New Path ***"
-  newPath="/source/"$MYSQL_PERSISTENT_PATH
-  echo $newPath
+  newPath="/source/"$MYSQL_PERSISTENT_NAME
+  echo "Merging " $newPath " into " $oldPath ""...."
   echo "*** Changes to my.cnf ***"
   sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf 
 else
@@ -211,15 +209,15 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 
 		echo
 		# Changes if using persistent data
-		if [ ! -f "${MYSQL_PERSISTENT_DB}/ik-ben-klaar" ]; then
+		if [ ! -f "${newPath}/ik-ben-klaar" ]; then
 		   echo "*** Start of SQL import ***"
 		   ls /docker-entrypoint-initdb.d/ > /dev/null
 		   for f in /docker-entrypoint-initdb.d/*; do
 			process_init_file "$f" "${mysql[@]}"
 		   done
-		   touch $MYSQL_PERSISTENT_DB/ik-ben-klaar
+		   touch $newPath/ik-ben-klaar
 		else
-		   echo "*** ${MYSQL_PERSISTENT_DB} has a previous deployment ***"
+		   echo "*** ${newPath} has a previous deployment ***"
 		fi
 
 		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
