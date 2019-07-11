@@ -1,12 +1,19 @@
 #!/bin/bash
-echo "*** Persistent Old Path ***"
-oldPath="/var/lib/mysql"
-echo $oldPath
-echo "*** Persistent New Path ***"
-newPath=$MYSQL_PERSISTENT_DB
-echo $newPath
-echo "*** Changes to my.cnf ***"
-sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
+
+echo "*** Persistent = " $MYSQL_LOCAL_PATH " ***"
+if [ "$MYSQL_LOCAL_PATH" = "true" ]; then
+  echo "Adjusting deployment for local storage"
+else
+  echo "Adjusting deployment for local storage"
+  echo "*** Persistent Old Path ***"
+  oldPath="/var/lib/mysql"
+  echo $oldPath
+  echo "*** Persistent New Path ***"
+  newPath=$MYSQL_PERSISTENT_PATH
+  echo $newPath
+  echo "*** Changes to my.cnf ***"
+  sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
+fi
 echo "*** Finish Persistent Path ***"
 
 set -eo pipefail
