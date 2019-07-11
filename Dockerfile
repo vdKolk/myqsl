@@ -1,7 +1,9 @@
 FROM mysql:8.0.16
 COPY config/my.cnf /etc/mysql/my.cnf
-COPY docker-entrypoint.sh /
+COPY dbBatch.sh /
+RUN ["chmod", "+x", "/dbBatch.sh"]
 
+COPY docker-entrypoint.sh /
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
