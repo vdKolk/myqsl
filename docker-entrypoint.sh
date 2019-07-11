@@ -7,7 +7,7 @@ if [ "$MYSQL_LOCAL_PATH" = "true" ]; then
   oldPath="/var/lib/mysql"
   echo $oldPath
   echo "*** Persistent New Path ***"
-  newPath=$MYSQL_PERSISTENT_PATH
+  newPath="/source/"$MYSQL_PERSISTENT_PATH
   echo $newPath
   echo "*** Changes to my.cnf ***"
   sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf 
