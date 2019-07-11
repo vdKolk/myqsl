@@ -1,0 +1,18 @@
+pipeline:
+
+  build-branch: &build
+    image: plugins/docker
+    repo: scienta/scienta-mysql
+    dockerfile: Dockerfile
+    context: ./
+    auto_tag: false
+    tags: "branch-${DRONE_BRANCH}"
+    secrets: [ docker_username, docker_password ]
+    when:
+      event: [push]
+
+  build-tag:
+    <<: *build
+    tags: "${DRONE_TAG}"
+    when:
+      event: [tag]
