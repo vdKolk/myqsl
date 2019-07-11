@@ -43,7 +43,7 @@ do
                         echo "-------------------------------" 2>&1 | tee -a $LOGFILE
                         echo "$DB: " 2>&1 | tee -a $LOGFILE
 
-                        mysql -h $HOST -u$USER -p$PWD $DB -e "UPDATE Users set email = concat(userId, '@scienta.nl') where email NOT LIKE '%syslogic.nl' AND email NOT LIKE '%scienta.nl';" 2>&1 | tee -a $LOGFILE
+                        mysql -h $HOST -u$USER -p$MYSQL_ROOT_PASSWORD $DB -e "UPDATE Users set email = concat(userId, '@scienta.nl') where email NOT LIKE '%syslogic.nl' AND email NOT LIKE '%scienta.nl';" 2>&1 | tee -a $LOGFILE
                 fi
         done
 done
