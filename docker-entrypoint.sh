@@ -6,7 +6,7 @@ if [ "$MYSQL_PERSISTENT" = "true" ]; then
   echo "*** Persistent change ***"
   oldPath="/var/lib/mysql"
   newPath="/source/"$MYSQL_PERSISTENT_NAME
-  echo "Merging " $newPath " into " $oldPath ""...."
+  echo "Merging " $newPath " into " $oldPath "...."
   echo "*** Changes to my.cnf ***"
   sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf 
 else
