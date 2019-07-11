@@ -1,4 +1,19 @@
 #!/bin/bash
+# if persistent is true use local data, else store mysql remote
+echo "*** Persistent = " $MYSQL_PERSISTENT " ***"
+if [ "$MYSQL_PERSISTENT" = "true" ]; then
+  echo "Adjusting deployment for persistent storage"
+  echo "*** Persistent change ***"
+  oldPath="/var/lib/mysql"
+  newPath="/source/"$MYSQL_PERSISTENT_NAME
+  echo "Merging " $newPath " into " $oldPath "...."
+  echo "*** Changes to my.cnf ***"
+  sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf 
+else
+  echo "Adjusting deployment for temporary storage"
+fi
+echo "*** Finish Persistent Path ***"
+
 set -eo pipefail
 shopt -s nullglob
 
@@ -193,10 +208,17 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		fi
 
 		echo
-		ls /docker-entrypoint-initdb.d/ > /dev/null
-		for f in /docker-entrypoint-initdb.d/*; do
+		# Changes if using persistent data
+		if [ ! -f "${newPath}/ik-ben-klaar" ]; then
+		   echo "*** Start of SQL import ***"
+		   ls /docker-entrypoint-initdb.d/ > /dev/null
+		   for f in /docker-entrypoint-initdb.d/*; do
 			process_init_file "$f" "${mysql[@]}"
-		done
+		   done
+		   touch $newPath/ik-ben-klaar
+		else
+		   echo "*** ${newPath} has a previous deployment ***"
+		fi
 
 		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
 			"${mysql[@]}" <<-EOSQL
