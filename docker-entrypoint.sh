@@ -214,10 +214,16 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		   ls /docker-entrypoint-initdb.d/ > /dev/null
 		   for f in /docker-entrypoint-initdb.d/*; do
 			process_init_file "$f" "${mysql[@]}"
-		   done
-		   touch $newPath/ik-ben-klaar
+                   done
 		else
 		   echo "*** ${newPath} has a previous deployment ***"
+		fi
+
+		if [ "$MYSQL_PERSISTENT" = "true" ]; then
+		  touch $newPath/ik-ben-klaar
+		  echo "*** Deployment done ***"
+		else
+		  echo "*** Deployment done ***"
 		fi
 
 		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
