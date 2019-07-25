@@ -242,6 +242,4 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 	fi
 fi
 
-touch /mysql-ready
-
 exec "$@"
