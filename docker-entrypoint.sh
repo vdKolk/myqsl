@@ -8,7 +8,7 @@ if [ "$MYSQL_PERSISTENT" = "true" ]; then
   newPath="/source/"$MYSQL_PERSISTENT_NAME
   echo "Merging " $newPath " into " $oldPath "...."
   echo "*** Changes to my.cnf ***"
-  sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf 
+  sed -i 's|'$oldPath'|'$newPath'|g' /etc/mysql/my.cnf
 else
   echo "Adjusting deployment for temporary storage"
 fi
@@ -241,5 +241,7 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 		echo
 	fi
 fi
+
+touch /mysql-ready
 
 exec "$@"
